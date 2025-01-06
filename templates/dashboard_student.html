@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9f5ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        }
+        h1 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            font-size: 14px;
+            margin-top: 10px;
+            color: #34495e;
+        }
+        input[type="datetime-local"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .button {
+            width: 48%;
+            padding: 10px;
+            margin: 10px 1%;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .action-buttons {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Attendance</h1>
+        <form>
+            <label for="datetime">Select Date and Time:</label>
+            <input type="datetime-local" id="datetime" name="datetime" required>
+
+            <label for="class">Select Class:</label>
+            <select id="class" name="class" required>
+                <option value="" disabled selected>-- Select Class --</option>
+                <option value="Event driven programming">Event driven programming</option>
+                <option value="Web Engineering">Web Engineering</option>
+                <option value="Digital electronics construction">Digital electronics construction</option>
+                <option value="Networking">Networking</option>
+            </select>
+
+            <div class="action-buttons">
+                <button type="button" class="button" onclick="markAttendance()">Mark Attendance</button>
+                <button type="button" class="button" onclick="checkGrades()">Check Grades</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function markAttendance() {
+            const datetime = document.getElementById('datetime').value;
+            const selectedClass = document.getElementById('class').value;
+
+            if (!datetime || !selectedClass) {
+                alert("Please select both date/time and class before marking attendance.");
+                return;
+            }
+
+            alert(`Attendance marked for class: ${selectedClass} on ${datetime}`);
+            // Add logic to handle attendance marking
+        }
+
+        function checkGrades() {
+            alert("Redirecting to the grade checker...");
+            // Add logic to handle grade checking
+        }
+    </script>
+</body>
+</html>

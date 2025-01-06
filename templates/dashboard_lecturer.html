@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        }
+        h1 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .button {
+            width: 90%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .input-box {
+            margin-top: 20px;
+            display: none;
+        }
+        select,
+        input[type="text"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .close-button {
+            background-color: #e74c3c;
+            color: #ffffff;
+            font-size: 14px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .close-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lecturer Dashboard</h1>
+        <button class="button" onclick="openEnrollStudent()">Enroll Student</button>
+        <button class="button" onclick="openCreateAttendance()">Select Class</button>
+        <button class="button" onclick="openGradeCalculator()">Grade Calculator</button>
+        <button class="button" onclick="checkGrades()">Grade Checker</button>
+
+        <!-- Enroll Student Input Box -->
+        <form method="POST" action="{% url 'lecturer_dashboard' %}">
+            {% csrf_token %}
+            <div id="enroll-student-box" class="input-box">
+                <select id="student" placeholder="Select Student" name="studentId">
+                    <option value="">--Select a student--</option>
+                    {% for student in students %}
+                        <option value="{{ student.StudentID }}">{{ student.Firstname }}</option>
+                    {% endfor %}
+                </select>
+                <select id="className" placeholder="Select Class" name="classId">
+                    <option value="">--Select a Class--</option>
+                    {% for class in classes %}
+                        <option value="{{ class.ClassID }}">{{ class.ClassName }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="button">Submit</button>
+                <button class="close-button" onclick="closeEnrollStudent()">Close</button>
+            </div>
+        </form>
+
+        <!-- Select Class Input Box -->
+        <div id="create-attendance-box" class="input-box">
+            <select id="className" placeholder="Select Class">
+                <option value="">--Select a class--</option>
+                {% for class in classes %}
+                    <option value="{{ class.ClassId }}">{{ class.ClassName }}</option>
+                {% endfor %}
+            </select>
+            <input type="datetime-local" id="classDateTime" placeholder="Select Date and Time">
+            <button class="button" onclick="createAttendance()">Submit</button>
+            <button class="close-button" onclick="closeCreateAttendance()">Close</button>
+        </div>
+
+        <!-- Grade Calculator Input Box -->
+        <div id="grade-calculator-box" class="input-box">
+            <input type="text" id="calculatorStudentName" placeholder="Enter Student's Name">
+            <button class="button" onclick="calculateGrades()">Submit</button>
+            <button class="close-button" onclick="closeGradeCalculator()">Close</button>
+        </div>
+
+        <!-- Grade Checker Input Box -->
+        <div id="grade-checker-box" class="input-box">
+            <input type="text" id="studentNameCheck" placeholder="Enter Student's Name">
+            <button class="button" onclick="fetchStudentGrades()">Submit</button>
+            <button class="close-button" onclick="closeGradeChecker()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Enroll Student
+        function openEnrollStudent() {
+            document.getElementById('enroll-student-box').style.display = 'block';
+        }
+
+        function enrollStudent() {
+            const studentName = document.getElementById('studentNameEnroll').value;
+            const studentID = document.getElementById('studentID').value;
+
+            if (!studentName || !studentID) {
+                alert("Please enter both student name and ID.");
+                return;
+            }
+
+            alert(`Student ${studentName} (ID: ${studentID}) has been enrolled.`);
+            closeEnrollStudent();
+        }
+
+        function closeEnrollStudent() {
+            document.getElementById('enroll-student-box').style.display = 'none';
+            document.getElementById('studentNameEnroll').value = '';
+            document.getElementById('studentID').value = '';
+        }
+
+        // Create Class Attendance
+        function openCreateAttendance() {
+            document.getElementById('create-attendance-box').style.display = 'block';
+        }
+
+        function createAttendance() {
+            const className = document.getElementById('className').value;
+            const classDateTime = document.getElementById('classDateTime').value;
+
+            if (!className || !classDateTime) {
+                alert("Please enter both class name and date/time.");
+                return;
+            }
+
+            alert(`Class ${className} attendance created for ${classDateTime}.`);
+            closeCreateAttendance();
+        }
+
+        function closeCreateAttendance() {
+            document.getElementById('create-attendance-box').style.display = 'none';
+            document.getElementById('className').value = '';
+            document.getElementById('classDateTime').value = '';
+        }
+
+        // Grade Calculator
+        function openGradeCalculator() {
+            document.getElementById('grade-calculator-box').style.display = 'block';
+        }
+
+        function calculateGrades() {
+            const studentName = document.getElementById('calculatorStudentName').value;
+
+            if (!studentName) {
+                alert("Please enter a student's name.");
+                return;
+            }
+
+            alert(`Calculating grades for ${studentName}...`);
+            closeGradeCalculator();
+        }
+
+        function closeGradeCalculator() {
+            document.getElementById('grade-calculator-box').style.display = 'none';
+            document.getElementById('calculatorStudentName').value = '';
+        }
+
+        // Grade Checker
+        function checkGrades() {
+            document.getElementById('grade-checker-box').style.display = 'block';
+        }
+
+        function fetchStudentGrades() {
+            const studentName = document.getElementById('studentNameCheck').value;
+
+            if (!studentName) {
+                alert("Please enter a student's name.");
+                return;
+            }
+
+            alert(`Fetching grades for ${studentName}...`);
+            closeGradeChecker();
+        }
+
+        function closeGradeChecker() {
+            document.getElementById('grade-checker-box').style.display = 'none';
+            document.getElementById('studentNameCheck').value = '';
+        }
+    </script>
+</body>
+</html>
+
