@@ -23,5 +23,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login, name='login'),
     path('dashboard/student/', views.student_dashboard, name='student_dashboard'),
-    path('dashboard/lecturer/', views.lecturer_dashboard, name='lecturer_dashboard')
+    path('dashboard/lecturer/', views.lecturer_dashboard, name='lecturer_dashboard'),
+    path('dashboard/grade/<int:class_id>', views.calculate_final_grade, name='calculate_final_grade')
 ]

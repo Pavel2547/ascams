@@ -39,6 +39,7 @@ class Class(models.Model):
     ClassID = models.AutoField(primary_key=True)
     ClassName = models.CharField(max_length=100)
     LecturerID = models.ForeignKey(Lecturer, on_delete=models.CASCADE)
+    SessionNumber = models.IntegerField(default=0)
 
     def __str__(self):
         return self.ClassName
@@ -67,7 +68,7 @@ class AttendanceRecord(models.Model):
     )
 
     def __str__(self):
-        return f"Attendance {self.AttendanceID} - {self.AttendanceStatus}"
+        return f"{self.EnrollmentID} - {self.AttendanceStatus}"
 
 
 # Grade Model

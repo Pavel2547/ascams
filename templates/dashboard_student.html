@@ -36,6 +36,8 @@
             color: #34495e;
         }
         input[type="datetime-local"],
+        input[type="time"],
+        input[type="date"],
         select {
             width: 100%;
             padding: 10px;
@@ -66,21 +68,29 @@
 <body>
     <div class="container">
         <h1>Student Attendance</h1>
-        <form>
-            <label for="datetime">Select Date and Time:</label>
-            <input type="datetime-local" id="datetime" name="datetime" required>
+        <form method="POST" action="{% url 'student_dashboard' %}">
+            {% csrf_token %}
+            <label for="date">Select Date and Time:</label>
+            <input type="date" id="datetime" name="date" required>
+            <input type="time" id="datetime" name="time" required>
 
-            <label for="class">Select Class:</label>
-            <select id="class" name="class" required>
-                <option value="" disabled selected>-- Select Class --</option>
-                <option value="Event driven programming">Event driven programming</option>
-                <option value="Web Engineering">Web Engineering</option>
-                <option value="Digital electronics construction">Digital electronics construction</option>
-                <option value="Networking">Networking</option>
+            <label for="enrollment">Select Enrollment:</label>
+            <select id="enrollment" name="enrollment_id">
+                <option value="">--Select Enrollment--</option>
+                {% for enrollment in enrollments %}
+                    <option value="{{ enrollment.EnrollmentID }}">{{ enrollment.StudentID.Firstname }} {{ enrollment.StudentID.Surname }} Enrolled in {{ enrollment.ClassID.ClassName }}</option>
+                {% endfor %}
             </select>
 
+            <label for="datetime">Select Attendance Status:</label>
+            <select id="attendance_status" name="attendance_status">
+                <option value="">--Select Attendance Status--</option>
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+            </select>
+            
             <div class="action-buttons">
-                <button type="button" class="button" onclick="markAttendance()">Mark Attendance</button>
+                <button type="submit" class="button">Mark Attendance</button>
                 <button type="button" class="button" onclick="checkGrades()">Check Grades</button>
             </div>
         </form>

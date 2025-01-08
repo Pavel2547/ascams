@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grade Calculation</title>
+</head>
+<body>
+    <h1>Grade Calculation for Class: {{ class_name }}</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Attendance Percentage</th>
+                <th>Final Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for update in grade_updates %}
+                <tr>
+                    <td>{{ update.student_name }}</td>
+                    <td>{{ update.attendance_percentage }}%</td>
+                    <td>{{ update.final_grade }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'lecturer_dashboard' %}">Back to Class List</a>
+</body>
+</html>

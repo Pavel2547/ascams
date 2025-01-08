@@ -75,7 +75,6 @@
     <div class="container">
         <h1>Lecturer Dashboard</h1>
         <button class="button" onclick="openEnrollStudent()">Enroll Student</button>
-        <button class="button" onclick="openCreateAttendance()">Select Class</button>
         <button class="button" onclick="openGradeCalculator()">Grade Calculator</button>
         <button class="button" onclick="checkGrades()">Grade Checker</button>
 
@@ -95,30 +94,25 @@
                         <option value="{{ class.ClassID }}">{{ class.ClassName }}</option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="button">Submit</button>
+                <button type="submit" name="action" value="enrollment" class="button">Submit</button>
                 <button class="close-button" onclick="closeEnrollStudent()">Close</button>
             </div>
         </form>
 
-        <!-- Select Class Input Box -->
-        <div id="create-attendance-box" class="input-box">
-            <select id="className" placeholder="Select Class">
-                <option value="">--Select a class--</option>
-                {% for class in classes %}
-                    <option value="{{ class.ClassId }}">{{ class.ClassName }}</option>
-                {% endfor %}
-            </select>
-            <input type="datetime-local" id="classDateTime" placeholder="Select Date and Time">
-            <button class="button" onclick="createAttendance()">Submit</button>
-            <button class="close-button" onclick="closeCreateAttendance()">Close</button>
-        </div>
-
         <!-- Grade Calculator Input Box -->
-        <div id="grade-calculator-box" class="input-box">
-            <input type="text" id="calculatorStudentName" placeholder="Enter Student's Name">
-            <button class="button" onclick="calculateGrades()">Submit</button>
-            <button class="close-button" onclick="closeGradeCalculator()">Close</button>
-        </div>
+        <form method="POST" action="{% url 'lecturer_dashboard' %}">
+            {% csrf_token %}
+            <div id="grade-calculator-box" class="input-box">
+                <select id="className" placeholder="Select Class" name="classId">
+                    <option value="">--Select a Class--</option>
+                    {% for class in classes %}
+                        <option value="{{ class.ClassID }}">{{ class.ClassName }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" name="action" value="grade_calculator" class="button">Submit</button>
+                <button class="close-button" onclick="closeEnrollStudent()">Close</button>
+            </div>
+        </form>
 
         <!-- Grade Checker Input Box -->
         <div id="grade-checker-box" class="input-box">
