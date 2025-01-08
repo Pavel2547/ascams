@@ -105,7 +105,7 @@ def calculate_final_grade(request, class_id):
 
     if total_sessions == 0:
         messages.error(request, "Session count for the class is zero. Cannot calculate grades.")
-        return redirect('class_list')  # Redirect to a class list view (replace 'class_list' as needed)
+        return redirect('lecturer_dashboard')  # Redirect to a class list view (replace 'class_list' as needed)
 
     # Get all enrollments for the class
     enrollments = Enrollment.objects.filter(ClassID=class_obj)
