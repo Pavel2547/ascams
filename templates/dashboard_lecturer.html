@@ -76,7 +76,7 @@
         <h1>Lecturer Dashboard</h1>
         <button class="button" onclick="openEnrollStudent()">Enroll Student</button>
         <button class="button" onclick="openGradeCalculator()">Grade Calculator</button>
-        <button class="button" onclick="checkGrades()">Grade Checker</button>
+        
 
         <!-- Enroll Student Input Box -->
         <form method="POST" action="{% url 'lecturer_dashboard' %}">
@@ -112,14 +112,7 @@
                 <button type="submit" name="action" value="grade_calculator" class="button">Submit</button>
                 <button class="close-button" onclick="closeEnrollStudent()">Close</button>
             </div>
-        </form>
-
-        <!-- Grade Checker Input Box -->
-        <div id="grade-checker-box" class="input-box">
-            <input type="text" id="studentNameCheck" placeholder="Enter Student's Name">
-            <button class="button" onclick="fetchStudentGrades()">Submit</button>
-            <button class="close-button" onclick="closeGradeChecker()">Close</button>
-        </div>
+       
     </div>
 
     <script>
@@ -193,27 +186,6 @@
             document.getElementById('calculatorStudentName').value = '';
         }
 
-        // Grade Checker
-        function checkGrades() {
-            document.getElementById('grade-checker-box').style.display = 'block';
-        }
-
-        function fetchStudentGrades() {
-            const studentName = document.getElementById('studentNameCheck').value;
-
-            if (!studentName) {
-                alert("Please enter a student's name.");
-                return;
-            }
-
-            alert(`Fetching grades for ${studentName}...`);
-            closeGradeChecker();
-        }
-
-        function closeGradeChecker() {
-            document.getElementById('grade-checker-box').style.display = 'none';
-            document.getElementById('studentNameCheck').value = '';
-        }
     </script>
 </body>
 </html>
